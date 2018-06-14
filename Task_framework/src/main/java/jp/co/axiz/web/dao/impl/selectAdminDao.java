@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.axiz.web.dao.AdminDao;
 import jp.co.axiz.web.entity.Admin;
@@ -17,6 +18,7 @@ public class selectAdminDao implements AdminDao {
 	@Autowired
     private NamedParameterJdbcTemplate nPJT;
 
+	@Transactional
     public Admin findById(String id, String pass) {
 
             SqlParameterSource param = new MapSqlParameterSource().addValue("id", id).addValue("pass",pass);

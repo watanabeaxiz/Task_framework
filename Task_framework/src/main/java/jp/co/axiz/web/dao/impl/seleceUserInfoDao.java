@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.axiz.web.dao.UserInfoDao;
 import jp.co.axiz.web.entity.UserInfo;
@@ -27,6 +28,7 @@ public class seleceUserInfoDao implements UserInfoDao {
 	@Autowired
     private NamedParameterJdbcTemplate nPJT;
 
+	@Transactional
     public UserInfo findById(Integer id) {
 
             SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
@@ -41,11 +43,13 @@ public class seleceUserInfoDao implements UserInfoDao {
             }
     }
 
+	@Transactional
     public List<UserInfo> findAll () {
 		return jT.query(SQL_SEARCH_ALL, new BeanPropertyRowMapper<UserInfo>(UserInfo.class));
 	}
 
 	//ユーザーの検索
+	@Transactional
 	public List<UserInfo> search (String id, String name, String tel) {
 		String SQL_SELECT_INFO = "SELECT user_id, user_name, telephone FROM user_info";
 
@@ -124,7 +128,7 @@ public class seleceUserInfoDao implements UserInfoDao {
 //	public UserInfo findById (int id) {
 //		return (UserInfo) jT.query(SQL_SEARCH_WHERE_ID, new BeanPropertyRowMapper<UserInfo>(UserInfo.class));
 //	}
-
+	@Transactional
 	public void register(String name,String tel,String pass) {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name",name).addValue("tel", tel).addValue("pass",pass);
 		try {
@@ -133,7 +137,7 @@ public class seleceUserInfoDao implements UserInfoDao {
 		}
 	}
 
-
+	@Transactional
 	public List<UserInfo> findMax() {
 		SqlParameterSource param = new MapSqlParameterSource();
 		try {
@@ -143,6 +147,7 @@ public class seleceUserInfoDao implements UserInfoDao {
 		return null;
 	}
 
+	@Transactional
     public int updateName(UserInfo user){
 
     	Integer id = user.getUserId();
@@ -153,7 +158,7 @@ public class seleceUserInfoDao implements UserInfoDao {
     	return nPJT.update("UPDATE user_info SET user_name = :name WHERE user_id= :id", param);
 
     }
-
+	@Transactional
 	public int updateTel(UserInfo user) {
 
 		Integer id = user.getUserId();
@@ -164,7 +169,7 @@ public class seleceUserInfoDao implements UserInfoDao {
     	return nPJT.update("UPDATE user_info SET telephone = :tel WHERE user_id= :id", param);
 
 	}
-
+	@Transactional
 	public int updatePass(UserInfo user) {
 
 		Integer id = user.getUserId();
@@ -175,7 +180,7 @@ public class seleceUserInfoDao implements UserInfoDao {
     	return nPJT.update("UPDATE user_info SET password = :pass WHERE user_id= :id", param);
 
 	}
-
+	@Transactional
 	public void deleteById(Integer id) {
 
 		SqlParameterSource param =new MapSqlParameterSource().addValue("id",id);
